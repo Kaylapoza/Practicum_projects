@@ -1,0 +1,19 @@
+{
+  "name": "weblarek",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "check": "prettier --check './**/*.{html,css,scss,ts}'",
+    "format": "prettier --write './**/*.{html,css,scss,ts}'"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.4",
+    "sass-embedded": "^1.90.0",
+    "typescript": "~5.8.3",
+    "vite": "^8.0.16"
+  }
+}
