@@ -1,0 +1,49 @@
+.skillcard {
+  display: flex;
+  flex-direction: column;
+  width: 324px;
+  gap: 20px;
+  padding: 24px;
+  position: relative;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+.like {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.skillbox {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.skillbox p {
+  margin-block-end: 14px;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 2%;
+}
+
+.learnbox {
+  display: flex;
+  gap: 4px;
+  width: 284px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tag {
+  display: inline-block;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 20px;
+}

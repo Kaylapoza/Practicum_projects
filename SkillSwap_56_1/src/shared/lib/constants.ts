@@ -1,0 +1,30 @@
+export const ROUTES = {
+  HOME: '/',
+  CATALOG: '/catalog',
+  SKILL: '/skill/:id',
+  PROFILE: '/profile',
+  FAVORITES: '/favorites',
+  CREATE: '/create',
+  LOGIN: '/login',
+  REGISTER: '/register',
+} as const
+
+export const SKILL_CATEGORIES = [
+  'Программирование',
+  'Дизайн',
+  'Языки',
+  'Музыка',
+  'Спорт',
+  'Кулинария',
+  'Фото и видео',
+  'Бизнес',
+  'Другое',
+] as const
+
+export const LOCAL_STORAGE_KEYS = {
+  AUTH_USER: 'skillswap_auth_user',
+  FAVORITES: 'skillswap_favorites',
+  REQUESTS: 'skillswap_requests',
+  THEME: 'skillswap_theme',
+  CREATED_SKILLS: 'skillswap_created_skills',
+} as const

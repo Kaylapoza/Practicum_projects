@@ -1,0 +1,118 @@
+import styles from './SkillCard.module.css';
+import { UserInfo } from '@/entities/user/ui/UserInfo/UserInfo';
+import { SkillTag } from '@/shared/ui/SkillTag/SkillTag';
+import { LikeButton } from '@/shared/ui/LikeButton/LikeButton';
+import { Button } from '@/shared/ui/button/Button';
+import type { LearnTag } from '@/entities/skill/model/types';
+import { mock } from './mock';
+import { useState, useEffect, useRef } from 'react';
+
+export { mock as testMock };
+
+export interface SkillCardProps {
+  id: string,
+  user: {
+    avatarUrl: string | null,
+    name: string,
+    city: string,
+    age: number,
+    description: string
+  },
+  teach: {
+    teachValue: string,
+    teachTagColor: string
+  },
+  learn: {
+    learnValue: LearnTag[]
+  },
+  moreTagColor: string,
+  withButton: boolean,
+  likesCount?: number,
+  withLikeButton?: boolean,
+  withDescription?: boolean,
+  isLiked?: boolean,
+  onLikeToggle?: () => void,
+  onNavigate?: (id: string) => void
+}
+
+export const SkillCard = (props: SkillCardProps) => {
+  const { id, onNavigate } = props;
+
+  const learnBoxRef = useRef<HTMLDivElement>(null);
+  const [visibleSkillsCount, setVisibleSkillsCount] = useState(props.learn.learnValue.length);
+
+  useEffect(() => {
+    // Измеренеие ширины плашки со скрытыми тэгами
+    const moreTagWidth = () => {
+      const moreTag = document.createElement('span');
+      moreTag.style.display = 'inline-block'
+      moreTag.style.margin = '0'
+      moreTag.style.padding = '8px 12px'
+      moreTag.style.borderRadius = '20px'
+      moreTag.style.position = 'absolute'
+      moreTag.style.visibility = 'hidden'
+      moreTag.textContent = `+${props.learn.learnValue.length}`
+      document.body.appendChild(moreTag)
+      const tagWidth = moreTag.getBoundingClientRect().width
+      moreTag.remove()
+      return tagWidth
+    }
+    const learnBox = learnBoxRef.current;
+    if (!learnBox) return;
+
+    const skills = [...learnBox.querySelectorAll('span')];
+    const learnBoxRightSpace = learnBox.getBoundingClientRect().right
+    const moreWidth = moreTagWidth();
+
+    let visibleCount = 0;
+    for (const skill of skills) {
+
+      if (skill.getBoundingClientRect().right <= learnBoxRightSpace - moreWidth) {
+        visibleCount++;
+      } else break;
+    }
+    setVisibleSkillsCount(visibleCount);
+  }, [props.learn.learnValue])
+
+  const moreSkills = props.learn.learnValue.length - visibleSkillsCount;
+
+  const handleDetailsClick = () => {
+    if (onNavigate) {
+      onNavigate(id)
+    }
+  }
+
+  return (
+    <div className={styles.skillcard}>
+      <div className={styles.like}>
+        {props.withLikeButton && (
+          <LikeButton liked={props.isLiked ?? false} count={props.likesCount} onToggle={props.onLikeToggle} />
+        )}
+      </div>
+      <UserInfo name={props.user.name} city={props.user.city} age={props.user.age} avatarUrl={props.user.avatarUrl} />
+      {props.withDescription && <p>{props.user.description}</p>}
+      <div className={styles.skillbox}>
+        <div>
+          <p>Может научить:</p>
+          <div>
+            <SkillTag color={props.teach.teachTagColor} value={props.teach.teachValue} />
+          </div>
+        </div>
+        <div>
+          <p>Хочет научиться:</p>
+          <div ref={learnBoxRef} className={styles.learnbox}>
+            {props.learn.learnValue.slice(0, visibleSkillsCount).map((tag, i) => (
+              <SkillTag key={i} color={tag.color} value={tag.value} />
+            ))}
+            {moreSkills > 0 && <SkillTag color={props.moreTagColor} value={`+${moreSkills}`} />}
+          </div>
+        </div>
+      </div>
+      {props.withButton && (
+        <Button variant="primary" onClick={handleDetailsClick}>
+          Подробнее
+        </Button>
+      )}
+    </div>
+  )
+};
